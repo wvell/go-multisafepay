@@ -17,8 +17,8 @@ func TestValidatePostNotification(t *testing.T) {
 
 	auth := &bytes.Buffer{}
 	auth.Write(timestamp)
-	auth.Write(postNotificationAuthSep)
-	auth.Write(makeHMAC(timestamp, payload, apiKey).Sum(nil))
+	auth.WriteString(postNotificationAuthSep)
+	auth.WriteString(makeHMAC(timestamp, payload, apiKey))
 	authHeader := base64.StdEncoding.EncodeToString(auth.Bytes())
 
 	t.Logf("Auth header: %s", authHeader)
