@@ -42,6 +42,9 @@ func (c *Client) performRequest(req *http.Request) (io.ReadCloser, error) {
 
 	// Check status, anything but 200 (OK) is reason to raise an error
 	if res.StatusCode != http.StatusOK {
+		// Ensure the response body is closed, even when reading invalid JSON.
+		defer res.Body.Close()
+
 		// Find error in the response body
 		var errData ErrorResponse
 		if err := json.NewDecoder(res.Body).Decode(&errData); err != nil {
